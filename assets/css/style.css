@@ -365,6 +365,21 @@ textarea { resize: vertical; min-height: 120px; }
 }
 .footer-bottom p { color: rgba(255,255,255,0.6); margin: 0; }
 
+.footer-partner-logo-wrap {
+  display: inline-block;
+  background: var(--color-white);
+  padding: 8px 14px;
+  border-radius: 8px;
+  margin-top: 12px;
+}
+.footer-partner-logo { height: 22px; width: auto; display: block; }
+
+.partner-logo {
+  height: 56px;
+  width: auto;
+  margin: 12px 0 20px;
+}
+
 /* Fixed call button */
 .fixed-cta {
   position: fixed;
