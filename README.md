@@ -58,8 +58,36 @@ Qualquer um destes serviços pode ligar-se diretamente ao repositório GitHub:
 
 ## Domínio
 
-Domínio próprio a registar separadamente (ex: `.pt` via [DNS.pt](https://www.dns.pt) ou `.com`) e a apontar
-para o hosting escolhido. Ver `TODO.md`.
+Domínio: **dmdcmediadores.pt**, gerido em [DNS.pt](https://www.dns.pt). O ficheiro `CNAME` na raiz do
+projeto já configura o domínio custom no GitHub Pages.
+
+### 1. Configurar DNS (em DNS.pt, ou onde o domínio estiver gerido)
+
+Adicionar estes registos na zona DNS de `dmdcmediadores.pt`:
+
+| Tipo  | Nome | Valor                     |
+|-------|------|---------------------------|
+| A     | @    | 185.199.108.153           |
+| A     | @    | 185.199.109.153           |
+| A     | @    | 185.199.110.153           |
+| A     | @    | 185.199.111.153           |
+| CNAME | www  | drcc.github.io            |
+
+(Opcional, IPv6 — registos AAAA para `@`: `2606:50c0:8000::153`, `2606:50c0:8001::153`,
+`2606:50c0:8002::153`, `2606:50c0:8003::153`)
+
+A propagação DNS pode demorar entre alguns minutos a 24-48h.
+
+### 2. Configurar no GitHub
+
+Em **Settings → Pages** do repositório:
+1. Em **Custom domain**, escreve `dmdcmediadores.pt` e grava (o ficheiro `CNAME` do repositório já trata
+   disto automaticamente, mas convém confirmar que aparece aqui).
+2. Espera que o GitHub valide o DNS (ícone verde).
+3. Ativa **Enforce HTTPS** assim que essa opção deixar de estar desativada (o certificado demora alguns
+   minutos a ser emitido depois do DNS propagar).
+
+Depois disto, o site fica acessível em `https://dmdcmediadores.pt`.
 
 ## Antes de publicar
 

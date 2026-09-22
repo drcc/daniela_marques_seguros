@@ -26,7 +26,7 @@ jobs:
       - name: Prepare site
         run: |
           mkdir -p public
-          cp -r index.html seguros-nao-vida.html seguros-vida.html sobre.html contacto.html privacidade.html termos.html assets robots.txt public/
+          cp -r index.html seguros-nao-vida.html seguros-vida.html sobre.html contacto.html privacidade.html termos.html assets robots.txt CNAME public/
 
       - uses: actions/configure-pages@v5
 
