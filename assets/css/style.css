@@ -419,3 +419,26 @@ textarea { resize: vertical; min-height: 120px; }
   .nav-toggle { display: flex; }
   .footer-inner { grid-template-columns: 1fr; }
 }
+
+/* Botão flutuante WhatsApp */
+.whatsapp-float {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.whatsapp-float:hover { transform: scale(1.08); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3); color: #fff; }
+.whatsapp-float svg { width: 30px; height: 30px; }
+@media (max-width: 720px) {
+  .whatsapp-float { right: 16px; bottom: 16px; width: 52px; height: 52px; }
+}
