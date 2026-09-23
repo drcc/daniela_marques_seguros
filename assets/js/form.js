@@ -1,5 +1,7 @@
 // TODO: substituir pelo URL do Google Apps Script Web App (ver google-apps-script/README.md)
-var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/PREENCHER_COM_DEPLOYMENT_ID/exec';
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzfXSucAYFv-7dkZJ-afWubEJZt6Hw5Gri6oKNUx7dT5TlNpR4Ja6u8QrCjZbokx5kV1A/exec';
+
+var MAX_ANEXO_BYTES = 8 * 1024 * 1024;
 
 document.addEventListener('DOMContentLoaded', function () {
   var form = document.getElementById('contact-form');
@@ -21,24 +23,36 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    var payload = {
-      nome: form.nome.value.trim(),
-      email: form.email.value.trim(),
-      telefone: form.telefone.value.trim(),
-      ramo: form.ramo.value,
-      mensagem: form.mensagem.value.trim(),
-    };
+    var anexo = form.anexo && form.anexo.files[0];
+    if (anexo && anexo.size > MAX_ANEXO_BYTES) {
+      showStatus('error', 'O anexo excede o limite de 8MB. Reduz o ficheiro ou envia-o por email.');
+      return;
+    }
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'A enviar...';
     hideStatus();
 
-    // Content-Type text/plain evita o pedido preflight OPTIONS, que o Apps Script não trata.
-    fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload),
-    })
+    readFileAsBase64(anexo)
+      .then(function (anexoData) {
+        var payload = {
+          nome: form.nome.value.trim(),
+          email: form.email.value.trim(),
+          telefone: form.telefone.value.trim(),
+          ramo: form.ramo.value,
+          mensagem: form.mensagem.value.trim(),
+          anexoNome: anexoData ? anexo.name : '',
+          anexoTipo: anexoData ? anexo.type : '',
+          anexoBase64: anexoData || '',
+        };
+
+        // Content-Type text/plain evita o pedido preflight OPTIONS, que o Apps Script não trata.
+        return fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload),
+        });
+      })
       .then(function (response) { return response.json(); })
       .then(function (data) {
         if (data && data.result === 'success') {
@@ -56,6 +70,19 @@ document.addEventListener('DOMContentLoaded', function () {
         submitBtn.textContent = 'Enviar mensagem';
       });
   });
+
+  function readFileAsBase64(file) {
+    if (!file) return Promise.resolve(null);
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var result = reader.result;
+        resolve(result.substring(result.indexOf(',') + 1));
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
 
   function showStatus(type, message) {
     statusBox.textContent = message;
