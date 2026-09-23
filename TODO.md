@@ -2,10 +2,11 @@
 
 Marcados no site com `[PREENCHER]` — substituir diretamente no HTML (procura por `fill-me` ou `PREENCHER`).
 
-- [ ] NIF da corretora
-- [ ] Número de registo na ASF (obrigatório por lei, visível no rodapé de todas as páginas)
-- [ ] Morada da sede (se aplicável)
-- [ ] Telefone e email a publicar
+- [x] Entidade representada no rodapé: SEGURAMOS – Corretores e Consultores de Seguros, S.A. (NIF 504 197 797, ASF 608 269 702, sede Av. de França, 256, Loja 38, Porto)
+- [ ] NIF da Daniela Marques Seguros (responsável pelo tratamento de dados em `privacidade.html` e `termos.html`)
+- [ ] Confirmar se a Daniela tem registo próprio na ASF como agente e, se sim, acrescentá-lo ao rodapé
+- [ ] Morada de atendimento em Aveiro (se for para publicar)
+- [x] Telefone (925 678 696) e email (dmdcmediadores@gmail.com)
 - [x] Domínio: `dmdcmediadores.pt` — falta apenas configurar os registos DNS (ver `README.md`)
 - [ ] Logótipo próprio da Daniela Marques Seguros (substituir `assets/img/logo-placeholder.svg`) — o logótipo da Seguramos já está incluído em `assets/img/seguramos-logo.png` e exposto no rodapé e em `sobre.html`
 - [x] Hex codes da paleta Seguramos — confirmados por amostragem do logótipo oficial: `#065d7f`/`#06bed3` (fornecidos) correspondem a `#005d7f`/`#16bed3` (extraídos do PNG). Aplicados em `assets/css/style.css` (`:root`).
@@ -13,7 +14,7 @@ Marcados no site com `[PREENCHER]` — substituir diretamente no HTML (procura p
 - [ ] Foto/retrato para `sobre.html`
 - [ ] Rever `privacidade.html` e `termos.html` com um jurista antes de publicar
 - [ ] Configurar o Google Apps Script e atualizar `APPS_SCRIPT_URL` em `assets/js/form.js` (ver `google-apps-script/README.md`)
-- [ ] Mapa da sede em `contacto.html` (atualmente um placeholder)
+- [ ] Mapa em `contacto.html` (atualmente um placeholder) — só se houver morada de atendimento a publicar
 
 # Funcionalidades opcionais (fase 2)
 
@@ -21,3 +22,11 @@ Marcados no site com `[PREENCHER]` — substituir diretamente no HTML (procura p
 - [ ] FAQ sobre sinistros e mudança de seguradora
 - [ ] Botão fixo de WhatsApp/telefone
 - [ ] Testemunhos de clientes
+
+# SEO local (Aveiro / Ílhavo) — passos fora do site
+
+- [ ] Criar o **Perfil da Empresa no Google** (business.google.com) como "empresa de área de serviço" em Aveiro/Ílhavo, com o link https://dmdcmediadores.pt, telefone e categoria "Agência de seguros" — é o que faz aparecer no mapa/"pack local" do Google
+- [ ] Pedir avaliações Google a clientes satisfeitos
+- [ ] Registar o site no **Google Search Console** e submeter `https://dmdcmediadores.pt/sitemap.xml`
+- [ ] Manter nome, telefone e morada iguais em todo o lado (site, Google, Facebook/Instagram, diretórios como Páginas Amarelas)
+- [ ] Pedir à Seguramos um link para o site a partir da página da rede de parceiros

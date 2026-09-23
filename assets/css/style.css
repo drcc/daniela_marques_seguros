@@ -364,6 +364,7 @@ textarea { resize: vertical; min-height: 120px; }
   text-align: center;
 }
 .footer-bottom p { color: rgba(255,255,255,0.6); margin: 0; }
+.footer-bottom .footer-areas { font-size: 0.8rem; color: rgba(255,255,255,0.45); margin-top: 4px; }
 
 .footer-partner-logo-wrap {
   display: inline-block;

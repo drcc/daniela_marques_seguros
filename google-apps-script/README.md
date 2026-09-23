@@ -13,6 +13,9 @@ Este ficheiro explica como ligar o formulário de contacto (`contacto.html`) a u
 1. Na Sheet, vai a **Extensões → Apps Script**.
 2. Apaga o conteúdo do editor e cola o conteúdo de [`Code.gs`](./Code.gs).
 3. Grava o projeto (ex: nome "Formulário Contacto").
+4. No topo do editor, seleciona a função **`autorizarDrive`** e clica em **Executar**. Aceita as
+   permissões pedidas (Google Sheets e Google Drive). Isto cria a pasta dos anexos e garante que o
+   script tem acesso ao Drive — sem este passo, os anexos falham.
 
 ## 3. Publicar como Web App
 

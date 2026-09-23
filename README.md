@@ -1,6 +1,6 @@
 # Daniela Marques Seguros
 
-Site institucional de corretora de seguros (Vida e Não Vida), em parceria com a Seguramos.
+Site institucional de agente de seguros vinculada (Vida e Não Vida), em representação da Seguramos Brokers.
 
 ## Stack
 
