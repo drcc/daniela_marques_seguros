@@ -5,12 +5,12 @@ function doPost(e) {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     var data = JSON.parse(e.postData.contents);
 
-    var anexo;
+    var anexos;
     try {
-      anexo = guardarAnexo(data);
+      anexos = guardarAnexos(data);
     } catch (err) {
-      // O contacto é guardado mesmo que o anexo falhe, para não se perder o pedido.
-      anexo = 'ERRO ao guardar anexo "' + (data.anexoNome || '') + '": ' + err.message;
+      // O contacto é guardado mesmo que os anexos falhem, para não se perder o pedido.
+      anexos = 'ERRO ao guardar anexos: ' + err.message;
     }
 
     sheet.appendRow([
@@ -20,7 +20,7 @@ function doPost(e) {
       data.telefone || '',
       data.ramo || '',
       data.mensagem || '',
-      anexo,
+      anexos,
       data.tipo || '',
     ]);
 
@@ -30,16 +30,21 @@ function doPost(e) {
   }
 }
 
-function guardarAnexo(data) {
-  if (!data.anexoBase64) return '';
+// Guarda os anexos (até 3) na pasta do Drive e devolve os links, um por linha.
+function guardarAnexos(data) {
+  var anexos = data.anexos ||
+    (data.anexoBase64 ? [{ nome: data.anexoNome, tipo: data.anexoTipo, base64: data.anexoBase64 }] : []);
+  if (!anexos.length) return '';
 
-  var blob = Utilities.newBlob(
-    Utilities.base64Decode(data.anexoBase64),
-    data.anexoTipo || 'application/octet-stream',
-    data.anexoNome || 'anexo'
-  );
-  var file = getOrCreateFolder(PASTA_ANEXOS).createFile(blob);
-  return file.getUrl();
+  var pasta = getOrCreateFolder(PASTA_ANEXOS);
+  return anexos.slice(0, 3).map(function (a) {
+    var blob = Utilities.newBlob(
+      Utilities.base64Decode(a.base64),
+      a.tipo || 'application/octet-stream',
+      a.nome || 'anexo'
+    );
+    return pasta.createFile(blob).getUrl();
+  }).join('\n');
 }
 
 function getOrCreateFolder(nome) {

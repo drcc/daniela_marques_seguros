@@ -7,28 +7,32 @@ var TIPOS = {
   automovel: {
     titulo: 'Seguro Auto',
     anexoDica: 'Ex: DUA, carta de condução, apólice atual.',
-    infoDica: 'Pode indicar a matrícula da sua viatura, marca e modelo, bem como qual a seguradora atual.',
+    infoDica: 'Neste campo poderá informar qual a seguradora atual, valor pago na última anuidade, ou outras informações que considere pertinente.',
     nota: 'As simulações têm validade de um mês, pelo que devem ser pedidas, no máximo, com um mês de antecedência face ao término do seguro atual.',
     campos: [
       { name: 'veiculo', label: 'Tipo de veículo', type: 'radio', required: true, options: ['Automóvel', 'Moto'], full: true },
       { name: 'marca_modelo', label: 'Marca e modelo', required: true, placeholder: 'Ex: Renault Clio 1.5 dCi' },
-      { name: 'ano', label: 'Ano do veículo', type: 'number', required: true, min: 1950, max: 2030 },
-      { name: 'matricula', label: 'Matrícula', placeholder: 'Ex: AA-00-AA' },
+      { name: 'matricula', label: 'Matrícula', required: true, placeholder: 'Ex: AA-00-AA' },
+      { name: 'nif', label: 'NIF', required: true, placeholder: '9 dígitos', pattern: '[0-9]{9}', maxlength: 9, inputmode: 'numeric',
+        title: 'O NIF tem 9 dígitos' },
       { name: 'codigo_postal', label: 'Código postal', required: true, placeholder: 'Ex: 3800-000' },
       { name: 'nascimento', label: 'Data de nascimento do condutor', type: 'date', required: true },
-      { name: 'carta', label: 'Ano de obtenção da carta', type: 'number', required: true, min: 1950, max: 2030 },
+      { name: 'carta', label: 'Data de obtenção da carta de condução', type: 'date', required: true },
       { name: 'coberturas', label: 'Tipo de coberturas (assinale as pretendidas)', type: 'checkbox', full: true,
-        options: ['Quebra isolada de vidros', 'Quebra isolada de vidros + Furto e Roubo', 'Danos Próprios Completo (Multirriscos)', 'Viatura de Substituição'] },
+        options: ['Quebra Isolada de Vidros', 'Quebra Isolada de Vidros + Furto e Roubo', 'Danos Próprios Completo (Multirriscos)', 'Viatura de Substituição'] },
       { name: 'sinistros', label: 'Sinistros nos últimos 5 anos', type: 'select', options: ['Nenhum', '1', '2 ou mais'] },
     ],
   },
   habitacao: {
-    titulo: 'Seguro de Habitação',
+    titulo: 'Seguro Habitação',
     anexoDica: 'Ex: apólice atual, caderneta predial.',
+    infoDica: 'Indique que tipo de coberturas deseja ou outras informações que considere relevante.',
     campos: [
-      { name: 'tipo_imovel', label: 'Tipo de imóvel', type: 'select', required: true, options: ['Apartamento', 'Moradia'] },
+      { name: 'objeto', label: 'O que pretende segurar', type: 'radio', required: true, full: true,
+        options: ['Edifício e recheio', 'Apenas edifício', 'Apenas recheio'] },
+      { name: 'tipo_imovel', label: 'Tipo de imóvel', type: 'select', required: true, options: ['Apartamento', 'Moradia', 'Outro'] },
       { name: 'utilizacao', label: 'Utilização', type: 'select', required: true,
-        options: ['Habitação própria permanente', 'Habitação secundária', 'Arrendada a terceiros'] },
+        options: ['Habitação própria permanente', 'Habitação secundária', 'Arrendada a terceiros', 'Alojamento Local'] },
       { name: 'codigo_postal', label: 'Código postal', required: true, placeholder: 'Ex: 3830-000' },
       { name: 'ano_construcao', label: 'Ano de construção', type: 'number', min: 1800, max: 2030 },
       { name: 'area', label: 'Área (m²)', type: 'number', min: 1 },
@@ -40,12 +44,16 @@ var TIPOS = {
   saude: {
     titulo: 'Seguro de Saúde',
     anexoDica: 'Ex: apólice atual.',
+    infoDica: 'Pode descrever qual o tipo de coberturas que procura, bem como atuais apólices que possua.',
     campos: [
       { name: 'pessoas', label: 'Número de pessoas a segurar', type: 'number', required: true, min: 1 },
-      { name: 'idades', label: 'Idades das pessoas', required: true, placeholder: 'Ex: 42, 40, 12' },
+      { name: 'idades', label: 'Idade das pessoas', required: true, placeholder: 'Ex: 42, 40, 12' },
       { name: 'plano', label: 'Plano pretendido', type: 'select', required: true,
-        options: ['Base (consultas e exames)', 'Intermédio (inclui internamento)', 'Completo (inclui estomatologia e parto)', SIM_NAO_SEI] },
+        options: ['Base (consultas e exames)', 'Intermédio (inclui internamento)', 'Completo (inclui estomatologia e parto)', 'Preciso de aconselhamento'] },
       { name: 'seguro_atual', label: 'Tem seguro de saúde atualmente?', type: 'select', options: ['Sim', 'Não'] },
+      { name: 'ambito', label: 'Âmbito', type: 'radio', full: true, options: ['Portugal', 'Portugal e Estrangeiro'] },
+      { name: 'coberturas', label: 'Coberturas pretendidas (assinale as que deseja)', type: 'checkbox', full: true,
+        options: ['Hospitalização', 'Cirurgias', 'Estomatologia', 'Parto', 'Medicamentos', 'Segunda opinião médica'] },
     ],
   },
   viagem: {
@@ -198,9 +206,9 @@ function criarFormulario(chave, ramo) {
         (tipo.infoDica ? ' placeholder="' + tipo.infoDica + '"' : '') + '></textarea>' +
     '</div>' +
     '<div class="form-group">' +
-      '<label for="' + prefixo + 'anexo">Anexo (opcional)</label>' +
-      '<input type="file" id="' + prefixo + 'anexo" name="anexo" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">' +
-      '<small class="form-hint">' + tipo.anexoDica + ' Máx. 8MB (PDF, imagem ou Word).</small>' +
+      '<label for="' + prefixo + 'anexo">Anexos (opcional)</label>' +
+      '<input type="file" id="' + prefixo + 'anexo" name="anexo" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">' +
+      '<small class="form-hint">' + tipo.anexoDica + ' Até 3 ficheiros, máx. 8MB cada (PDF, imagem ou Word).</small>' +
     '</div>' +
     '<div class="form-group checkbox-row">' +
       '<input type="checkbox" id="' + prefixo + 'rgpd" name="rgpd" required>' +
@@ -261,7 +269,9 @@ function campoHtml(c, prefixo) {
     controlo = '<textarea id="' + id + '" name="' + c.name + '" rows="3"' + placeholder + req + '></textarea>';
   } else {
     var tipo = c.type || 'text';
-    var limites = (c.min !== undefined ? ' min="' + c.min + '"' : '') + (c.max !== undefined ? ' max="' + c.max + '"' : '');
+    var limites = (c.min !== undefined ? ' min="' + c.min + '"' : '') + (c.max !== undefined ? ' max="' + c.max + '"' : '') +
+      (c.pattern ? ' pattern="' + c.pattern + '"' : '') + (c.maxlength ? ' maxlength="' + c.maxlength + '"' : '') +
+      (c.inputmode ? ' inputmode="' + c.inputmode + '"' : '') + (c.title ? ' title="' + c.title + '"' : '');
     controlo = '<input type="' + tipo + '" id="' + id + '" name="' + c.name + '"' + limites + placeholder + req + '>';
   }
 

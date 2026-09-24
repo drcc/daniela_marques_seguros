@@ -45,5 +45,5 @@ Este ficheiro explica como ligar o formulário de contacto (`contacto.html`) a u
 - Para consultar as submissões, basta abrir diretamente a Google Sheet.
 - Os anexos ficam guardados numa pasta do Google Drive chamada **"Daniela Marques Seguros — Anexos do
   site"** (criada automaticamente pelo script na primeira vez que alguém anexa um ficheiro), privados por
-  omissão (só visíveis à conta Google que geriu o Apps Script). O link para cada ficheiro fica na coluna
-  "Anexo" da Sheet.
+  omissão (só visíveis à conta Google que geriu o Apps Script). Cada pedido pode ter até 3 anexos; os links ficam na
+  coluna "Anexo" da Sheet, um por linha.

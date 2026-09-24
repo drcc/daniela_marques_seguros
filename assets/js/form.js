@@ -2,9 +2,10 @@
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzfXSucAYFv-7dkZJ-afWubEJZt6Hw5Gri6oKNUx7dT5TlNpR4Ja6u8QrCjZbokx5kV1A/exec';
 
 var MAX_ANEXO_BYTES = 8 * 1024 * 1024;
+var MAX_ANEXOS = 3;
 
 // Envia um pedido (contacto ou simulação) para a Google Sheet.
-// `payload` tem nome, email, telefone, ramo, tipo e mensagem; o anexo é lido do próprio formulário.
+// `payload` tem nome, email, telefone, ramo, tipo e mensagem; os anexos são lidos do próprio formulário.
 function enviarPedido(form, payload) {
   var statusBox = form.querySelector('.form-status');
   var submitBtn = form.querySelector('button[type="submit"]');
@@ -20,9 +21,10 @@ function enviarPedido(form, payload) {
   }
 
   var anexoInput = form.querySelector('input[type="file"]');
-  var anexo = anexoInput && anexoInput.files[0];
-  if (anexo && anexo.size > MAX_ANEXO_BYTES) {
-    showStatus('error', 'O anexo excede o limite de 8MB. Reduz o ficheiro ou envia-o por e-mail.');
+  var anexos = anexoInput ? ficheirosDoInput(anexoInput) : [];
+  var grande = anexos.filter(function (f) { return f.size > MAX_ANEXO_BYTES; })[0];
+  if (grande) {
+    showStatus('error', 'O ficheiro "' + grande.name + '" excede o limite de 8MB. Reduza o ficheiro ou envie-o por e-mail.');
     return;
   }
 
@@ -31,11 +33,11 @@ function enviarPedido(form, payload) {
   submitBtn.textContent = 'A enviar...';
   hideStatus();
 
-  readFileAsBase64(anexo)
-    .then(function (anexoData) {
-      payload.anexoNome = anexoData ? anexo.name : '';
-      payload.anexoTipo = anexoData ? anexo.type : '';
-      payload.anexoBase64 = anexoData || '';
+  Promise.all(anexos.map(readFileAsBase64))
+    .then(function (conteudos) {
+      payload.anexos = anexos.map(function (f, i) {
+        return { nome: f.name, tipo: f.type, base64: conteudos[i] };
+      });
 
       // Content-Type text/plain evita o pedido preflight OPTIONS, que o Apps Script não trata.
       return fetch(APPS_SCRIPT_URL, {
@@ -48,6 +50,7 @@ function enviarPedido(form, payload) {
     .then(function (data) {
       if (data && data.result === 'success') {
         form.reset();
+        if (anexoInput) definirAnexos(anexoInput, []);
         showStatus('success', 'Pedido enviado com sucesso. Entrarei em contacto brevemente.');
       } else {
         showStatus('error', 'Não foi possível enviar o pedido. Tente novamente ou contacte-nos por telefone.');
@@ -73,7 +76,6 @@ function enviarPedido(form, payload) {
 }
 
 function readFileAsBase64(file) {
-  if (!file) return Promise.resolve(null);
   return new Promise(function (resolve, reject) {
     var reader = new FileReader();
     reader.onload = function () {
@@ -84,6 +86,60 @@ function readFileAsBase64(file) {
     reader.readAsDataURL(file);
   });
 }
+
+// Anexos múltiplos: cada nova escolha junta-se às anteriores (até MAX_ANEXOS), com lista para remover.
+function ficheirosDoInput(input) {
+  return input._anexos || Array.prototype.slice.call(input.files);
+}
+
+function definirAnexos(input, ficheiros, excesso) {
+  input._anexos = ficheiros;
+  try {
+    var dt = new DataTransfer();
+    ficheiros.forEach(function (f) { dt.items.add(f); });
+    input.files = dt.files;
+  } catch (e) { /* browsers sem DataTransfer: a lista abaixo continua a ser a fonte de verdade */ }
+
+  var lista = input.parentNode.querySelector('.anexo-lista');
+  if (!lista) {
+    lista = document.createElement('ul');
+    lista.className = 'anexo-lista';
+    input.insertAdjacentElement('afterend', lista);
+  }
+  lista.innerHTML = '';
+  ficheiros.forEach(function (f, i) {
+    var item = document.createElement('li');
+    var tamanho = f.size < 1024 * 1024 ? Math.max(1, Math.round(f.size / 1024)) + ' KB' : (f.size / 1024 / 1024).toFixed(1) + ' MB';
+    item.textContent = f.name + ' (' + tamanho + ')';
+    var remover = document.createElement('button');
+    remover.type = 'button';
+    remover.className = 'anexo-remover';
+    remover.textContent = '×';
+    remover.setAttribute('aria-label', 'Remover ' + f.name);
+    remover.addEventListener('click', function () {
+      definirAnexos(input, ficheiros.filter(function (_, j) { return j !== i; }));
+    });
+    item.appendChild(remover);
+    lista.appendChild(item);
+  });
+  if (excesso) {
+    var aviso = document.createElement('li');
+    aviso.className = 'anexo-aviso';
+    aviso.textContent = 'Só é possível anexar até ' + MAX_ANEXOS + ' ficheiros.';
+    lista.appendChild(aviso);
+  }
+}
+
+document.addEventListener('change', function (event) {
+  var input = event.target;
+  if (!input.matches || !input.matches('input[type="file"][multiple]')) return;
+  var atuais = (input._anexos || []).slice();
+  Array.prototype.forEach.call(input.files, function (f) {
+    var repetido = atuais.some(function (x) { return x.name === f.name && x.size === f.size; });
+    if (!repetido) atuais.push(f);
+  });
+  definirAnexos(input, atuais.slice(0, MAX_ANEXOS), atuais.length > MAX_ANEXOS);
+});
 
 document.addEventListener('DOMContentLoaded', function () {
   var form = document.getElementById('contact-form');
