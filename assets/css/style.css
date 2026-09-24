@@ -530,3 +530,27 @@ textarea { resize: vertical; min-height: 120px; }
   padding: 0 4px;
 }
 .anexo-remover:hover { color: #b3261e; }
+
+/* Seguradoras parceiras */
+.insurer-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
+}
+.insurer-grid li {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+}
+.insurer-grid img { max-height: 56px; max-width: 100%; width: auto; height: auto; object-fit: contain; }
+.insurer-more { margin: 20px 0 0; font-size: 0.9rem; }
+@media (max-width: 900px) { .insurer-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 720px) { .insurer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; } .insurer-grid li { height: 76px; padding: 10px; } }

@@ -13,8 +13,6 @@ var TIPOS = {
       { name: 'veiculo', label: 'Tipo de veículo', type: 'radio', required: true, options: ['Automóvel', 'Moto'], full: true },
       { name: 'marca_modelo', label: 'Marca e modelo', required: true, placeholder: 'Ex: Renault Clio 1.5 dCi' },
       { name: 'matricula', label: 'Matrícula', required: true, placeholder: 'Ex: AA-00-AA' },
-      { name: 'nif', label: 'NIF', required: true, placeholder: '9 dígitos', pattern: '[0-9]{9}', maxlength: 9, inputmode: 'numeric',
-        title: 'O NIF tem 9 dígitos' },
       { name: 'codigo_postal', label: 'Código postal', required: true, placeholder: 'Ex: 3800-000' },
       { name: 'nascimento', label: 'Data de nascimento do condutor', type: 'date', required: true },
       { name: 'carta', label: 'Data de obtenção da carta de condução', type: 'date', required: true },
@@ -199,6 +197,8 @@ function criarFormulario(chave, ramo) {
       campoHtml({ name: 'nome', label: 'Nome', required: true }, prefixo) +
       campoHtml({ name: 'email', label: 'E-mail', type: 'email', required: true }, prefixo) +
       campoHtml({ name: 'telefone', label: 'Telemóvel', type: 'tel', required: true, placeholder: 'Ex: 912 345 678' }, prefixo) +
+      campoHtml({ name: 'nif', label: 'NIF', required: true, placeholder: '9 dígitos', pattern: '[0-9]{9}', maxlength: 9,
+        inputmode: 'numeric', title: 'O NIF tem 9 dígitos' }, prefixo) +
     '</div>' +
     '<div class="form-group">' +
       '<label for="' + prefixo + 'observacoes">Informações adicionais</label>' +
@@ -224,6 +224,7 @@ function criarFormulario(chave, ramo) {
     var nome = form.elements.nome.value.trim();
     var email = form.elements.email.value.trim();
     var telefone = form.elements.telefone.value.trim();
+    var nif = form.elements.nif.value.trim();
     var observacoes = form.elements.observacoes.value.trim();
 
     // Cada campo vira uma coluna no separador deste tipo de seguro (ver google-apps-script/Code.gs).
@@ -231,8 +232,9 @@ function criarFormulario(chave, ramo) {
       { nome: 'Nome', valor: nome },
       { nome: 'E-mail', valor: email },
       { nome: 'Telemóvel', valor: telefone },
+      { nome: 'NIF', valor: nif },
     ];
-    var linhas = ['Pedido de simulação — ' + tipo.titulo, ''];
+    var linhas = ['Pedido de simulação — ' + tipo.titulo, '', 'NIF: ' + nif];
     tipo.campos.forEach(function (c) {
       var rotulo = c.label.replace(/ \(assinale.*\)$/, '');
       var valor = valorCampo(form, c);
