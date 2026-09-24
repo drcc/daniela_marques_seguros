@@ -70,12 +70,16 @@ p { margin: 0 0 1em; color: var(--color-text-muted); }
 }
 
 .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-weight: 800;
   font-size: 1.15rem;
   color: var(--color-primary);
   white-space: nowrap;
 }
-.logo span { color: var(--color-accent-dark); }
+.logo-mark { height: 40px; width: auto; display: block; }
+.logo-text span { color: var(--color-accent-dark); }
 
 .main-nav ul {
   list-style: none;
@@ -441,4 +445,11 @@ textarea { resize: vertical; min-height: 120px; }
 .whatsapp-float svg { width: 30px; height: 30px; }
 @media (max-width: 720px) {
   .whatsapp-float { right: 16px; bottom: 16px; width: 52px; height: 52px; }
+}
+
+/* Logótipos DMDC Mediadores */
+.footer-logo { height: 46px; width: auto; display: block; margin-bottom: 14px; }
+.about-brand { display: block; width: 100%; max-width: 220px; height: auto; margin: 24px auto 0; }
+@media (max-width: 720px) {
+  .logo-mark { height: 32px; }
 }
