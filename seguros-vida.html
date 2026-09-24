@@ -73,9 +73,10 @@
             <li>Doenças graves (opcional)</li>
             <li>Beneficiários à sua escolha</li>
           </ul>
-          <a href="contacto.html?ramo=vida" class="btn btn-primary btn-block">Pedir simulação</a>
+          <a href="contacto.html?ramo=vida" class="btn btn-primary btn-block" data-sim-toggle="seguro-de-vida">Pedir simulação</a>
         </div>
       </div>
+      <div class="sim-panel" id="simular-seguro-de-vida" data-ramo="vida" hidden></div>
     </section>
 
     <section class="subsection" id="poupanca-reforma">
@@ -93,9 +94,10 @@
             <li>Perfis de risco (conservador a agressivo)</li>
             <li>Resgates programados</li>
           </ul>
-          <a href="contacto.html?ramo=vida" class="btn btn-primary btn-block">Pedir simulação</a>
+          <a href="contacto.html?ramo=vida" class="btn btn-primary btn-block" data-sim-toggle="poupanca-reforma">Pedir simulação</a>
         </div>
       </div>
+      <div class="sim-panel" id="simular-poupanca-reforma" data-ramo="vida" hidden></div>
     </section>
 
     <section class="subsection" id="credito-habitacao">
@@ -113,9 +115,10 @@
             <li>Aceite pela generalidade dos bancos</li>
             <li>Possibilidade de poupança face à seguradora do banco</li>
           </ul>
-          <a href="contacto.html?ramo=vida" class="btn btn-primary btn-block">Pedir simulação</a>
+          <a href="contacto.html?ramo=vida" class="btn btn-primary btn-block" data-sim-toggle="credito-habitacao">Pedir simulação</a>
         </div>
       </div>
+      <div class="sim-panel" id="simular-credito-habitacao" data-ramo="vida" hidden></div>
     </section>
 
   </div>
@@ -167,5 +170,7 @@
   </a>
 
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/form.js"></script>
+  <script src="assets/js/simulacao.js"></script>
 </body>
 </html>

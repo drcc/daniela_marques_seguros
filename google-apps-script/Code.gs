@@ -21,6 +21,7 @@ function doPost(e) {
       data.ramo || '',
       data.mensagem || '',
       anexo,
+      data.tipo || '',
     ]);
 
     return jsonResponse({ result: 'success' });

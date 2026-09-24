@@ -6,7 +6,7 @@ Este ficheiro explica como ligar o formulário de contacto (`contacto.html`) a u
 
 1. Cria uma nova Google Sheet (ex: "DMDC Mediadores — Contactos").
 2. Na primeira linha, adiciona os cabeçalhos:
-   `Data/Hora | Nome | Email | Telefone | Ramo | Mensagem | Anexo`
+   `Data/Hora | Nome | Email | Telefone | Ramo | Mensagem | Anexo | Tipo de seguro`
 
 ## 2. Adicionar o Apps Script
 

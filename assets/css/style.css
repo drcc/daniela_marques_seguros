@@ -283,7 +283,7 @@ p { margin: 0 0 1em; color: var(--color-text-muted); }
 }
 .form-group { margin-bottom: 18px; }
 label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; }
-input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], select, textarea {
   width: 100%;
   padding: 12px 14px;
   border: 1px solid var(--color-border);
@@ -454,4 +454,52 @@ textarea { resize: vertical; min-height: 120px; }
 .about-brand { display: block; width: 100%; max-width: 220px; height: auto; margin: 24px auto 0; }
 @media (max-width: 720px) {
   .logo-mark { height: 32px; }
+}
+
+/* Formulários de simulação (por tipo de seguro) */
+.sim-panel {
+  margin-top: 32px;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 32px;
+  scroll-margin-top: 96px;
+}
+.sim-panel h3 { color: var(--color-primary); margin-bottom: 6px; }
+.sim-intro { font-size: 0.9rem; }
+.sim-nota {
+  font-size: 0.88rem;
+  background: var(--color-white);
+  border-left: 3px solid var(--color-accent-dark);
+  padding: 10px 14px;
+  border-radius: 6px;
+  color: var(--color-text);
+}
+.sim-section-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-accent-dark);
+  margin: 24px 0 12px;
+}
+.sim-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
+.sim-grid .full { grid-column: 1 / -1; }
+.form-hint { display: block; color: var(--color-text-muted); margin-top: 4px; font-size: 0.82rem; }
+.choice-group { border: none; padding: 0; margin: 0 0 18px; min-width: 0; }
+.choice-group legend { font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; padding: 0; }
+.choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 400;
+  margin: 0 20px 8px 0;
+  cursor: pointer;
+}
+.choice input { width: auto; margin: 0; accent-color: var(--color-primary); }
+.choice-checkbox .choice { display: flex; margin-right: 0; }
+@media (max-width: 720px) {
+  .sim-panel { padding: 20px; }
+  .sim-grid { grid-template-columns: 1fr; }
+  .choice { display: flex; margin-right: 0; }
 }
