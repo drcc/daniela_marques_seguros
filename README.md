@@ -1,4 +1,4 @@
-# Daniela Marques Seguros
+# DMDC Mediadores — Daniela Marques
 
 Site institucional de agente de seguros vinculada (Vida e Não Vida), em representação da Seguramos Brokers.
 

@@ -3,13 +3,13 @@
 Marcados no site com `[PREENCHER]` — substituir diretamente no HTML (procura por `fill-me` ou `PREENCHER`).
 
 - [x] Entidade representada no rodapé: SEGURAMOS – Corretores e Consultores de Seguros, S.A. (NIF 504 197 797, ASF 608 269 702, sede Av. de França, 256, Loja 38, Porto)
-- [ ] NIF da Daniela Marques Seguros (responsável pelo tratamento de dados em `privacidade.html` e `termos.html`)
+- [ ] NIF da Daniela Marques (DMDC Mediadores) (responsável pelo tratamento de dados em `privacidade.html` e `termos.html`)
 - [ ] Confirmar se a Daniela tem registo próprio na ASF como agente e, se sim, acrescentá-lo ao rodapé
 - [ ] Morada de atendimento em Aveiro (se for para publicar)
 - [x] Telefone (925 678 696) e email (dmdcmediadores@gmail.com)
 - [x] Domínio: `dmdcmediadores.pt` — falta apenas configurar os registos DNS (ver `README.md`)
-- [ ] Logótipo próprio da Daniela Marques Seguros (substituir `assets/img/logo-placeholder.svg`) — o logótipo da Seguramos já está incluído em `assets/img/seguramos-logo.png` e exposto no rodapé e em `sobre.html`
-- [x] Hex codes da paleta Seguramos — confirmados por amostragem do logótipo oficial: `#065d7f`/`#06bed3` (fornecidos) correspondem a `#005d7f`/`#16bed3` (extraídos do PNG). Aplicados em `assets/css/style.css` (`:root`).
+- [x] Logótipo DMDC Mediadores (cabeçalho, rodapé, Sobre, favicon e imagem de partilha em `assets/img/`)
+- [x] Paleta do logótipo DMDC Mediadores aplicada em `assets/css/style.css` (`:root`): azul `#083d52`/`#012c42`, areia `#d5c2a4`/`#8a6d43`
 - [ ] Texto de apresentação pessoal/profissional em `sobre.html` (percurso, anos de experiência)
 - [ ] Foto/retrato para `sobre.html`
 - [ ] Rever `privacidade.html` e `termos.html` com um jurista antes de publicar

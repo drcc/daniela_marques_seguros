@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var anexo = form.anexo && form.anexo.files[0];
     if (anexo && anexo.size > MAX_ANEXO_BYTES) {
-      showStatus('error', 'O anexo excede o limite de 8MB. Reduz o ficheiro ou envia-o por email.');
+      showStatus('error', 'O anexo excede o limite de 8MB. Reduz o ficheiro ou envia-o por e-mail.');
       return;
     }
 
