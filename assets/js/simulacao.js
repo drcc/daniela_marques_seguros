@@ -221,18 +221,34 @@ function criarFormulario(chave, ramo) {
   form.addEventListener('submit', function (event) {
     event.preventDefault();
 
+    var nome = form.elements.nome.value.trim();
+    var email = form.elements.email.value.trim();
+    var telefone = form.elements.telefone.value.trim();
+    var observacoes = form.elements.observacoes.value.trim();
+
+    // Cada campo vira uma coluna no separador deste tipo de seguro (ver google-apps-script/Code.gs).
+    var campos = [
+      { nome: 'Nome', valor: nome },
+      { nome: 'E-mail', valor: email },
+      { nome: 'Telemóvel', valor: telefone },
+    ];
     var linhas = ['Pedido de simulação — ' + tipo.titulo, ''];
     tipo.campos.forEach(function (c) {
+      var rotulo = c.label.replace(/ \(assinale.*\)$/, '');
       var valor = valorCampo(form, c);
-      if (valor) linhas.push(c.label.replace(/ \(.*\)$/, '') + ': ' + valor);
+      campos.push({ nome: rotulo, valor: valor });
+      if (valor) linhas.push(rotulo + ': ' + valor);
     });
-    var observacoes = form.elements.observacoes.value.trim();
+    campos.push({ nome: 'Informações adicionais', valor: observacoes });
     if (observacoes) linhas.push('', 'Informações adicionais:', observacoes);
 
     enviarPedido(form, {
-      nome: form.elements.nome.value.trim(),
-      email: form.elements.email.value.trim(),
-      telefone: form.elements.telefone.value.trim(),
+      folha: tipo.titulo,
+      campos: campos,
+      // Campos antigos, usados pelo Apps Script anterior (compatibilidade até ser atualizado).
+      nome: nome,
+      email: email,
+      telefone: telefone,
       ramo: ramo,
       tipo: tipo.titulo,
       mensagem: linhas.join('\n'),

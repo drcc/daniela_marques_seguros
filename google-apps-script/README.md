@@ -5,8 +5,10 @@ Este ficheiro explica como ligar o formulário de contacto (`contacto.html`) a u
 ## 1. Criar a Google Sheet
 
 1. Cria uma nova Google Sheet (ex: "DMDC Mediadores — Contactos").
-2. Na primeira linha, adiciona os cabeçalhos:
-   `Data/Hora | Nome | Email | Telefone | Ramo | Mensagem | Anexo | Tipo de seguro`
+2. Não é preciso criar cabeçalhos: cada formulário escreve no seu próprio separador ("Contactos",
+   "Seguro Auto", "Seguro Habitação", ...), que o script cria automaticamente no primeiro pedido, com
+   uma coluna por campo (`Data/Hora`, `Nome`, `E-mail`, ..., `Anexos`). Se um formulário ganhar um campo
+   novo, a coluna é acrescentada sozinha no fim.
 
 ## 2. Adicionar o Apps Script
 
@@ -46,4 +48,4 @@ Este ficheiro explica como ligar o formulário de contacto (`contacto.html`) a u
 - Os anexos ficam guardados numa pasta do Google Drive chamada **"Daniela Marques Seguros — Anexos do
   site"** (criada automaticamente pelo script na primeira vez que alguém anexa um ficheiro), privados por
   omissão (só visíveis à conta Google que geriu o Apps Script). Cada pedido pode ter até 3 anexos; os links ficam na
-  coluna "Anexo" da Sheet, um por linha.
+  coluna "Anexos" do separador respetivo, um por linha.

@@ -5,7 +5,8 @@ var MAX_ANEXO_BYTES = 8 * 1024 * 1024;
 var MAX_ANEXOS = 3;
 
 // Envia um pedido (contacto ou simulação) para a Google Sheet.
-// `payload` tem nome, email, telefone, ramo, tipo e mensagem; os anexos são lidos do próprio formulário.
+// `payload.folha` é o separador de destino e `payload.campos` as colunas ({ nome, valor });
+// os anexos são lidos do próprio formulário.
 function enviarPedido(form, payload) {
   var statusBox = form.querySelector('.form-status');
   var submitBtn = form.querySelector('button[type="submit"]');
@@ -152,13 +153,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
   form.addEventListener('submit', function (event) {
     event.preventDefault();
-    enviarPedido(form, {
+    var dados = {
       nome: form.nome.value.trim(),
       email: form.email.value.trim(),
       telefone: form.telefone.value.trim(),
       ramo: form.ramo.value,
       tipo: 'Contacto geral',
       mensagem: form.mensagem.value.trim(),
-    });
+    };
+    dados.folha = 'Contactos';
+    dados.campos = [
+      { nome: 'Nome', valor: dados.nome },
+      { nome: 'E-mail', valor: dados.email },
+      { nome: 'Telefone', valor: dados.telefone },
+      { nome: 'Ramo', valor: form.ramo.value ? form.ramo.options[form.ramo.selectedIndex].text : '' },
+      { nome: 'Mensagem', valor: dados.mensagem },
+    ];
+    enviarPedido(form, dados);
   });
 });
