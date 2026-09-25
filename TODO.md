@@ -10,8 +10,8 @@ Marcados no site com `[PREENCHER]` — substituir diretamente no HTML (procura p
 - [x] Domínio: `dmdcmediadores.pt` — falta apenas configurar os registos DNS (ver `README.md`)
 - [x] Logótipo DMDC Mediadores (cabeçalho, rodapé, Sobre, favicon e imagem de partilha em `assets/img/`)
 - [x] Paleta do logótipo DMDC Mediadores aplicada em `assets/css/style.css` (`:root`): azul `#083d52`/`#012c42`, areia `#d5c2a4`/`#8a6d43`
-- [ ] Texto de apresentação pessoal/profissional em `sobre.html` (percurso, anos de experiência)
-- [ ] Foto/retrato para `sobre.html`
+- [x] Texto de apresentação pessoal/profissional em `sobre.html` (percurso, anos de experiência)
+- [x] Foto/retrato para `sobre.html`
 - [ ] Rever `privacidade.html` e `termos.html` com um jurista antes de publicar
 - [ ] Configurar o Google Apps Script e atualizar `APPS_SCRIPT_URL` em `assets/js/form.js` (ver `google-apps-script/README.md`)
 - [ ] Mapa em `contacto.html` (atualmente um placeholder) — só se houver morada de atendimento a publicar

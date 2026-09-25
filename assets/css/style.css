@@ -184,6 +184,7 @@ p { margin: 0 0 1em; color: var(--color-text-muted); }
 }
 .grid-2 { grid-template-columns: repeat(2, 1fr); }
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
 
 .card {
   background: var(--color-white);
@@ -399,6 +400,7 @@ textarea { resize: vertical; min-height: 120px; }
 /* Responsive */
 @media (max-width: 900px) {
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
   .subsection-inner { grid-template-columns: 1fr; }
   .about-grid { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
@@ -554,3 +556,19 @@ textarea { resize: vertical; min-height: 120px; }
 .insurer-more { margin: 20px 0 0; font-size: 0.9rem; }
 @media (max-width: 900px) { .insurer-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 720px) { .insurer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; } .insurer-grid li { height: 76px; padding: 10px; } }
+
+/* Sobre: foto e função */
+.about-photo-img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+@media (max-width: 900px) {
+  .about-photo-img { max-width: 360px; margin: 0 auto; }
+}
+@media (max-width: 480px) {
+  .grid-4 { grid-template-columns: 1fr; }
+}
