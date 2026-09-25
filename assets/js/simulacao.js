@@ -8,7 +8,6 @@ var TIPOS = {
     titulo: 'Seguro Auto',
     anexoDica: 'Ex: DUA, carta de condução, apólice atual.',
     infoDica: 'Neste campo poderá informar qual a seguradora atual, valor pago na última anuidade, ou outras informações que considere pertinente.',
-    nota: 'As simulações têm validade de um mês, pelo que devem ser pedidas, no máximo, com um mês de antecedência face ao término do seguro atual.',
     campos: [
       { name: 'veiculo', label: 'Tipo de veículo', type: 'radio', required: true, options: ['Automóvel', 'Moto'], full: true },
       { name: 'marca_modelo', label: 'Marca e modelo', required: true, placeholder: 'Ex: Renault Clio 1.5 dCi' },
@@ -77,8 +76,8 @@ var TIPOS = {
     anexoDica: 'Ex: apólice atual, declaração de início de atividade.',
     campos: [
       { name: 'tomador', label: 'Para quem é o seguro?', type: 'select', required: true,
-        options: ['Trabalhador independente', 'Empresa / entidade empregadora'] },
-      { name: 'atividade', label: 'Atividade / profissão', required: true, placeholder: 'Ex: eletricista, restauração, construção' },
+        options: ['Trabalhador independente', 'Empresa/Entidade Empregadora'] },
+      { name: 'atividade', label: 'Atividade/profissão', required: true, placeholder: 'Ex: eletricista, restauração, construção' },
       { name: 'trabalhadores', label: 'Número de trabalhadores', type: 'number', min: 1, placeholder: 'Se for empresa' },
       { name: 'remuneracao', label: 'Remuneração anual a segurar (€)', type: 'number', min: 0, placeholder: 'Total anual estimado' },
     ],
@@ -87,10 +86,16 @@ var TIPOS = {
     titulo: 'Seguro de Acidentes Pessoais',
     anexoDica: 'Ex: apólice atual.',
     campos: [
+      { name: 'quem', label: 'Quem pretende segurar?', type: 'radio', required: true, full: true,
+        options: ['Eu', 'Casal', 'Família', 'Outros'] },
       { name: 'nascimento', label: 'Data de nascimento', type: 'date', required: true },
       { name: 'profissao', label: 'Profissão', required: true },
       { name: 'ambito', label: 'Âmbito da cobertura', type: 'select',
-        options: ['24 horas (vida privada e profissional)', 'Apenas atividade profissional', 'Apenas vida privada / desporto', SIM_NAO_SEI] },
+        options: ['24 horas (vida privada e profissional)', 'Apenas atividade profissional', 'Apenas vida privada / desporto', 'Preciso de aconselhamento'] },
+      { name: 'ambito_seguro', label: 'Âmbito do seguro', type: 'select',
+        options: ['Vida pessoal', 'Atividade profissional', 'Atividade desportiva', 'Viagens', 'Proteção permanente — 24 horas', 'Outro'] },
+      { name: 'area_geografica', label: 'Área geográfica', type: 'select',
+        options: ['Portugal', 'Europa', 'Todo o mundo', 'Não sei — pretendo aconselhamento'] },
       { name: 'capital', label: 'Capital pretendido (€)', type: 'number', min: 0, placeholder: 'Se souber' },
     ],
   },
@@ -285,7 +290,7 @@ function campoHtml(c, prefixo) {
 
   if (c.type === 'select') {
     controlo = '<select id="' + id + '" name="' + c.name + '"' + req + '>' +
-      '<option value="">Selecione</option>' +
+      '<option value="">Selecione uma opção</option>' +
       c.options.map(function (o) { return '<option>' + o + '</option>'; }).join('') +
       '</select>';
   } else if (c.type === 'textarea') {
