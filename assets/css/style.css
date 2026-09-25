@@ -274,6 +274,19 @@ p { margin: 0 0 1em; color: var(--color-text-muted); }
 .stat-row { display: flex; gap: 32px; margin: 24px 0; flex-wrap: wrap; }
 .stat-row .stat strong { display: block; font-size: 1.8rem; color: var(--color-primary); }
 .stat-row .stat span { font-size: 0.85rem; color: var(--color-text-muted); }
+.highlight-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 28px 0; }
+.highlight { border-left: 3px solid var(--color-accent-dark); padding: 4px 0 4px 14px; }
+.highlight strong {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+.highlight span { display: block; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.45; }
+@media (max-width: 720px) { .highlight-row { grid-template-columns: 1fr; } }
 
 /* Contacto */
 .contact-grid {
