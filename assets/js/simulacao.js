@@ -74,6 +74,7 @@ var TIPOS = {
   'acidentes-trabalho': {
     titulo: 'Seguro de Acidentes de Trabalho',
     anexoDica: 'Ex: apólice atual, declaração de início de atividade.',
+    infoDica: 'Pode descrever que tipo de coberturas pretende, se já tem alguma apólice ativa.',
     campos: [
       { name: 'tomador', label: 'Para quem é o seguro?', type: 'select', required: true,
         options: ['Trabalhador independente', 'Empresa/Entidade Empregadora'] },
@@ -85,13 +86,12 @@ var TIPOS = {
   'acidentes-pessoais': {
     titulo: 'Seguro de Acidentes Pessoais',
     anexoDica: 'Ex: apólice atual.',
+    infoDica: 'Pode descrever que tipo de coberturas pretende, se já tem alguma apólice ativa.',
     campos: [
       { name: 'quem', label: 'Quem pretende segurar?', type: 'radio', required: true, full: true,
         options: ['Eu', 'Casal', 'Família', 'Outros'] },
       { name: 'nascimento', label: 'Data de nascimento', type: 'date', required: true },
       { name: 'profissao', label: 'Profissão', required: true },
-      { name: 'ambito', label: 'Âmbito da cobertura', type: 'select',
-        options: ['24 horas (vida privada e profissional)', 'Apenas atividade profissional', 'Apenas vida privada / desporto', 'Preciso de aconselhamento'] },
       { name: 'ambito_seguro', label: 'Âmbito do seguro', type: 'select',
         options: ['Vida pessoal', 'Atividade profissional', 'Atividade desportiva', 'Viagens', 'Proteção permanente — 24 horas', 'Outro'] },
       { name: 'area_geografica', label: 'Área geográfica', type: 'select',
