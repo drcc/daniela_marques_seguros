@@ -1,8 +1,6 @@
 // Formulários de simulação por tipo de seguro (seguros-nao-vida.html e seguros-vida.html).
 // Cada botão [data-sim-toggle="x"] abre/fecha o painel #simular-x, onde o formulário é criado a partir de TIPOS.
 
-var SIM_NAO_SEI = 'Não sei / aconselhe-me';
-
 var TIPOS = {
   automovel: {
     titulo: 'Seguro Auto',
@@ -134,12 +132,14 @@ var TIPOS = {
     titulo: 'Seguro de Vida',
     anexoDica: 'Ex: apólice atual, última simulação.',
     campos: [
+      { name: 'pessoas', label: 'Pessoas a segurar', type: 'radio', required: true, full: true, options: ['Uma pessoa', 'Duas pessoas'] },
       { name: 'nascimento', label: 'Data de nascimento', type: 'date', required: true },
-      { name: 'fumador', label: 'Fumador?', type: 'select', required: true, options: ['Não', 'Sim'] },
+      { name: 'nascimento_2', label: 'Data de nascimento da segunda pessoa segura', type: 'date', required: true,
+        mostrarSe: { campo: 'pessoas', valor: 'Duas pessoas' } },
       { name: 'profissao', label: 'Profissão' },
-      { name: 'capital', label: 'Capital pretendido (€)', type: 'number', min: 0, placeholder: 'Se souber' },
+      { name: 'capital', label: 'Capital pretendido (€)', type: 'number', required: true, min: 0 },
       { name: 'coberturas', label: 'Coberturas pretendidas', type: 'select',
-        options: ['Morte', 'Morte e invalidez', 'Morte, invalidez e doenças graves', SIM_NAO_SEI] },
+        options: ['Morte', 'Morte e invalidez', 'Morte, invalidez e doenças graves', 'Preciso de aconselhamento'] },
     ],
   },
   'poupanca-reforma': {
@@ -149,18 +149,18 @@ var TIPOS = {
       { name: 'nascimento', label: 'Data de nascimento', type: 'date', required: true },
       { name: 'objetivo', label: 'Objetivo', type: 'select', required: true,
         options: ['Complemento de reforma (PPR)', 'Poupança a médio/longo prazo', 'Educação dos filhos'] },
-      { name: 'montante_inicial', label: 'Montante inicial (€)', type: 'number', min: 0 },
-      { name: 'entrega_mensal', label: 'Entrega mensal (€)', type: 'number', min: 0 },
-      { name: 'perfil', label: 'Perfil de risco', type: 'select', options: ['Conservador', 'Moderado', 'Dinâmico', SIM_NAO_SEI] },
+      { name: 'tipo_entrega', label: 'Tipo de seguro', type: 'select', required: true, options: ['Entrega Única', 'Entregas Periódicas'] },
+      { name: 'montante_inicial', label: 'Montante inicial (€)', type: 'number', required: true, min: 0 },
+      { name: 'entrega_periodica', label: 'Entrega periódica (€)', type: 'number', min: 0 },
+      { name: 'perfil', label: 'Perfil de risco', type: 'select', options: ['Conservador', 'Moderado', 'Dinâmico', 'Preciso de aconselhamento'] },
     ],
   },
   'credito-habitacao': {
-    titulo: 'Seguro de Crédito Habitação',
-    anexoDica: 'Ex: FINE / simulação do banco, apólice atual.',
+    titulo: 'Seguro de Vida Crédito Habitação',
+    anexoDica: 'Ex: FINE / simulação do banco, condições do banco, apólice atual.',
     campos: [
       { name: 'titulares', label: 'Número de titulares', type: 'select', required: true, options: ['1', '2'] },
       { name: 'nascimentos', label: 'Data(s) de nascimento dos titulares', required: true, placeholder: 'Ex: 12/03/1985 e 04/07/1987' },
-      { name: 'fumadores', label: 'Fumadores', type: 'select', options: ['Nenhum', 'Um dos titulares', 'Ambos'] },
       { name: 'capital_divida', label: 'Capital em dívida (€)', type: 'number', required: true, min: 0 },
       { name: 'prazo', label: 'Prazo restante (anos)', type: 'number', min: 1, max: 50 },
       { name: 'banco', label: 'Banco', placeholder: 'Ex: CGD, Millennium, Santander' },
@@ -248,6 +248,21 @@ function criarFormulario(chave, ramo) {
     '<button type="submit" class="btn btn-primary">Enviar pedido de simulação</button>' +
     '<div class="form-status" role="status"></div>';
 
+  function atualizarCondicionais() {
+    form.querySelectorAll('[data-mostrar-campo]').forEach(function (bloco) {
+      var origem = form.elements[bloco.dataset.mostrarCampo];
+      var visivel = !!origem && origem.value === bloco.dataset.mostrarValor;
+      bloco.hidden = !visivel;
+      bloco.querySelectorAll('input, select, textarea').forEach(function (el) {
+        el.disabled = !visivel;  // campos escondidos não são validados nem enviados com valor
+        if (!visivel && el.type !== 'checkbox' && el.type !== 'radio') el.value = '';
+      });
+    });
+  }
+  form.addEventListener('change', atualizarCondicionais);
+  form.addEventListener('reset', function () { setTimeout(atualizarCondicionais, 0); });
+  atualizarCondicionais();
+
   form.addEventListener('submit', function (event) {
     event.preventDefault();
 
@@ -293,12 +308,14 @@ function criarFormulario(chave, ramo) {
 function campoHtml(c, prefixo) {
   var id = prefixo + c.name;
   var req = c.required ? ' required' : '';
+  // Campo que só aparece quando outro campo tem um dado valor (ex: segunda pessoa segura).
+  var cond = c.mostrarSe ? ' data-mostrar-campo="' + c.mostrarSe.campo + '" data-mostrar-valor="' + c.mostrarSe.valor + '" hidden' : '';
   var label = '<label for="' + id + '">' + c.label + (c.required ? ' *' : '') + '</label>';
   var placeholder = c.placeholder ? ' placeholder="' + c.placeholder + '"' : '';
   var controlo;
 
   if (c.type === 'radio' || c.type === 'checkbox') {
-    return '<fieldset class="form-group choice-group choice-' + c.type + (c.full ? ' full' : '') + '">' +
+    return '<fieldset class="form-group choice-group choice-' + c.type + (c.full ? ' full' : '') + '"' + cond + '>' +
       '<legend>' + c.label + (c.required ? ' *' : '') + '</legend>' +
       c.options.map(function (o, i) {
         var oid = id + '-' + i;
@@ -324,7 +341,7 @@ function campoHtml(c, prefixo) {
     controlo = '<input type="' + tipo + '" id="' + id + '" name="' + c.name + '"' + limites + placeholder + req + '>';
   }
 
-  return '<div class="form-group' + (c.full ? ' full' : '') + '">' + label + controlo + '</div>';
+  return '<div class="form-group' + (c.full ? ' full' : '') + '"' + cond + '>' + label + controlo + '</div>';
 }
 
 function valorCampo(form, c) {
