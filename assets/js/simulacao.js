@@ -102,12 +102,32 @@ var TIPOS = {
   'responsabilidade-civil': {
     titulo: 'Seguro de Responsabilidade Civil',
     anexoDica: 'Ex: apólice atual, exigência contratual.',
+    infoDica: 'Informações adicionais',
     campos: [
       { name: 'tipo_rc', label: 'Tipo de responsabilidade civil', type: 'select', required: true,
-        options: ['Familiar / vida privada', 'Profissional', 'Animais de companhia', 'Atividade desportiva', 'Outra'] },
+        options: ['Familiar / vida privada', 'Profissional', 'Animais de companhia', 'Atividade desportiva', 'Eventos', 'Outra', 'Preciso de aconselhamento'] },
       { name: 'capital', label: 'Capital pretendido (€)', type: 'number', min: 0, placeholder: 'Se souber' },
       { name: 'descricao', label: 'O que pretende segurar?', type: 'textarea', required: true, full: true,
-        placeholder: 'Descreva a atividade, o animal ou a situação a cobrir.' },
+        placeholder: 'Descreva o tipo de atividade e o risco a segurar de forma a que consigamos encontrar a melhor solução para si' },
+    ],
+  },
+  animais: {
+    titulo: 'Seguro para Animais de Companhia',
+    anexoDica: 'Ex: apólice atual, boletim de vacinas.',
+    infoDica: 'Descreva outras características do animal, tais como doenças, últimas cirurgias.',
+    campos: [
+      { name: 'tipo_animal', label: 'Tipo de animal', type: 'radio', required: true, full: true, options: ['Cão', 'Gato', 'Outro'] },
+      { name: 'morada_animal', label: 'Morada do animal', required: true, full: true },
+      { name: 'nome_animal', label: 'Nome do animal', required: true },
+      { name: 'especie', label: 'Espécie', required: true },
+      { name: 'genero', label: 'Género', type: 'select', required: true, options: ['Macho', 'Fêmea'] },
+      { name: 'raca', label: 'Raça', required: true },
+      { name: 'nascimento_animal', label: 'Data de nascimento', type: 'date', required: true },
+      { name: 'peso', label: 'Peso (kg)', type: 'number', required: true, min: 0, step: '0.1' },
+      { name: 'esterilizado', label: 'Está esterilizado?', type: 'radio', required: true, options: ['Sim', 'Não'] },
+      { name: 'coberturas', label: 'Coberturas pretendidas (assinale as que deseja)', type: 'checkbox', full: true,
+        options: ['Responsabilidade civil', 'Consultas veterinárias', 'Cirurgias', 'Medicamentos', 'Internamento', 'Acidentes',
+          'Morte ou desaparecimento', 'Assistência'] },
     ],
   },
   'seguro-de-vida': {
@@ -298,6 +318,7 @@ function campoHtml(c, prefixo) {
   } else {
     var tipo = c.type || 'text';
     var limites = (c.min !== undefined ? ' min="' + c.min + '"' : '') + (c.max !== undefined ? ' max="' + c.max + '"' : '') +
+      (c.step ? ' step="' + c.step + '"' : '') +
       (c.pattern ? ' pattern="' + c.pattern + '"' : '') + (c.maxlength ? ' maxlength="' + c.maxlength + '"' : '') +
       (c.inputmode ? ' inputmode="' + c.inputmode + '"' : '') + (c.title ? ' title="' + c.title + '"' : '');
     controlo = '<input type="' + tipo + '" id="' + id + '" name="' + c.name + '"' + limites + placeholder + req + '>';
