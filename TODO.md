@@ -12,7 +12,7 @@ Marcados no site com `[PREENCHER]` — substituir diretamente no HTML (procura p
 - [x] Paleta do logótipo DMDC Mediadores aplicada em `assets/css/style.css` (`:root`): azul `#083d52`/`#012c42`, areia `#d5c2a4`/`#8a6d43`
 - [x] Texto de apresentação pessoal/profissional em `sobre.html` (percurso, anos de experiência)
 - [x] Foto/retrato para `sobre.html`
-- [ ] Rever `privacidade.html` e `termos.html` com um jurista antes de publicar
+- [x] Textos de Privacidade e Termos confirmados com a Seguramos
 - [x] Google Apps Script configurado (separador por formulário, anexos no Drive, notificação por e-mail)
 - [x] Mapa: removido (sem morada de atendimento publicada)
 
@@ -25,8 +25,8 @@ Marcados no site com `[PREENCHER]` — substituir diretamente no HTML (procura p
 
 # SEO local (Aveiro / Ílhavo) — passos fora do site
 
-- [ ] Criar o **Perfil da Empresa no Google** (business.google.com) como "empresa de área de serviço" em Aveiro/Ílhavo, com o link https://dmdcmediadores.pt, telefone e categoria "Agência de seguros" — é o que faz aparecer no mapa/"pack local" do Google
+- [ ] Criar o **Perfil da Empresa no Google** (business.google.com) como "empresa de área de serviço" em Aveiro/Ílhavo, com o link https://dmdcmediadores.pt, telefone e categoria "Agência de seguros" — é o que faz aparecer no mapa/"pack local" do Google — só se houver atendimento presencial (negócios apenas online não são elegíveis)
 - [ ] Pedir avaliações Google a clientes satisfeitos
-- [ ] Registar o site no **Google Search Console** e submeter `https://dmdcmediadores.pt/sitemap.xml`
+- [x] Registar o site no **Google Search Console** e submeter `https://dmdcmediadores.pt/sitemap.xml`
 - [ ] Manter nome, telefone e morada iguais em todo o lado (site, Google, Facebook/Instagram, diretórios como Páginas Amarelas)
-- [ ] Pedir à Seguramos um link para o site a partir da página da rede de parceiros
+- [x] Pedir à Seguramos um link para o site a partir da página da rede de parceiros
