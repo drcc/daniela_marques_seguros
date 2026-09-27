@@ -322,16 +322,6 @@ textarea { resize: vertical; min-height: 120px; }
 .info-card ul { list-style: none; padding: 0; margin: 0; }
 .info-card li { margin-bottom: 14px; font-size: 0.95rem; }
 .info-card li strong { display: block; color: var(--color-primary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 2px; }
-.map-placeholder {
-  margin-top: 24px;
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius);
-  padding: 32px;
-  text-align: center;
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
-  background: var(--color-white);
-}
 
 /* Placeholder marker */
 .fill-me {

@@ -49,3 +49,9 @@ Este ficheiro explica como ligar o formulário de contacto (`contacto.html`) a u
   site"** (criada automaticamente pelo script na primeira vez que alguém anexa um ficheiro), privados por
   omissão (só visíveis à conta Google que geriu o Apps Script). Cada pedido pode ter até 3 anexos; os links ficam na
   coluna "Anexos" do separador respetivo, um por linha.
+- **Notificações por e-mail:** cada pedido novo envia um e-mail para o endereço definido em
+  `EMAIL_NOTIFICACAO` no topo de `Code.gs` (por omissão `dmdcmediadores@gmail.com`), com todos os campos,
+  os links dos anexos e um link para a Sheet. "Responder" nesse e-mail responde diretamente ao cliente.
+  Para desativar, deixar `EMAIL_NOTIFICACAO = ''`. Depois de colar esta versão, é preciso executar
+  `autorizarDrive` outra vez (passa a pedir também a permissão de enviar e-mails) e publicar uma nova versão.
+  Limite do Gmail gratuito: cerca de 100 e-mails por dia.

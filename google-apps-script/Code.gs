@@ -1,4 +1,6 @@
 var PASTA_ANEXOS = 'Daniela Marques Seguros — Anexos do site';
+// Endereço que recebe um e-mail por cada pedido novo (deixar vazio para desativar).
+var EMAIL_NOTIFICACAO = 'dmdcmediadores@gmail.com';
 
 function doPost(e) {
   try {
@@ -23,6 +25,13 @@ function doPost(e) {
       .concat([['Anexos', anexos]]);
 
     escreverLinha(data.folha || 'Contactos', pares);
+
+    try {
+      notificarPorEmail(data.folha || 'Contactos', pares, data.email);
+    } catch (err) {
+      // Uma falha no e-mail não impede o pedido de ficar registado na Sheet.
+      console.error('Falha ao enviar notificação: ' + err.message);
+    }
     return jsonResponse({ result: 'success' });
   } catch (err) {
     return jsonResponse({ result: 'error', message: err.message });
@@ -55,6 +64,44 @@ function escreverLinha(nomeFolha, pares) {
   } finally {
     lock.releaseLock();
   }
+}
+
+// Envia um e-mail com o resumo do pedido. "Responder" vai diretamente para o e-mail do cliente.
+function notificarPorEmail(tipo, pares, emailCliente) {
+  if (!EMAIL_NOTIFICACAO) return;
+
+  var valores = {};
+  pares.forEach(function (p) { valores[p[0]] = p[1]; });
+  var nome = valores['Nome'] || 'sem nome';
+
+  var linhas = pares.filter(function (p) { return p[0] !== 'Data/Hora' && p[1] !== '' && p[1] !== undefined; });
+  var tabela = linhas.map(function (p) {
+    var valor = escaparHtml(String(p[1])).replace(/\n/g, '<br>');
+    if (p[0] === 'Anexos') {
+      valor = String(p[1]).split('\n').map(function (url) {
+        return /^https:\/\//.test(url) ? '<a href="' + escaparHtml(url) + '">' + escaparHtml(url) + '</a>' : escaparHtml(url);
+      }).join('<br>');
+    }
+    return '<tr><td style="padding:6px 12px 6px 0;color:#56656c;vertical-align:top;white-space:nowrap">' +
+      escaparHtml(p[0]) + '</td><td style="padding:6px 0;color:#14232b">' + valor + '</td></tr>';
+  }).join('');
+
+  var html =
+    '<div style="font-family:Arial,sans-serif;font-size:14px">' +
+    '<h2 style="color:#083d52;margin:0 0 12px">Novo pedido: ' + escaparHtml(tipo) + '</h2>' +
+    '<table style="border-collapse:collapse">' + tabela + '</table>' +
+    '<p style="margin-top:20px"><a href="' + SpreadsheetApp.getActiveSpreadsheet().getUrl() + '">Abrir a Google Sheet</a></p>' +
+    '</div>';
+  var texto = linhas.map(function (p) { return p[0] + ': ' + p[1]; }).join('\n');
+
+  var opcoes = { htmlBody: html, name: 'Site DMDC Mediadores' };
+  if (emailCliente && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(emailCliente)) opcoes.replyTo = emailCliente;
+
+  MailApp.sendEmail(EMAIL_NOTIFICACAO, 'Novo pedido: ' + tipo + ' — ' + nome, texto, opcoes);
+}
+
+function escaparHtml(texto) {
+  return String(texto).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 // Impede que texto enviado pelo formulário seja interpretado como fórmula (ex: "=IMPORTXML(...)").
@@ -92,7 +139,8 @@ function jsonResponse(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-// Executar uma vez manualmente no editor para autorizar o acesso ao Google Drive.
+// Executar uma vez manualmente no editor para autorizar o acesso ao Google Drive e ao envio de e-mails.
 function autorizarDrive() {
   Logger.log('Pasta de anexos: ' + getOrCreateFolder(PASTA_ANEXOS).getUrl());
+  Logger.log('E-mails que ainda pode enviar hoje: ' + MailApp.getRemainingDailyQuota());
 }
