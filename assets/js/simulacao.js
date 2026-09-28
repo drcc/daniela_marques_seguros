@@ -259,6 +259,13 @@ function criarFormulario(chave, ramo) {
       });
     });
   }
+  // NIF: além dos 9 dígitos, confirma o dígito de controlo (evita gralhas e clientes duplicados).
+  var campoNif = form.elements.nif;
+  campoNif.addEventListener('input', function () {
+    var v = campoNif.value.replace(/\D/g, '');
+    campoNif.setCustomValidity(v.length === 9 && !nifValido(v) ? 'Este NIF não é válido. Confirme os dígitos.' : '');
+  });
+
   form.addEventListener('change', atualizarCondicionais);
   form.addEventListener('reset', function () { setTimeout(atualizarCondicionais, 0); });
   atualizarCondicionais();
@@ -353,4 +360,14 @@ function valorCampo(form, c) {
     return marcado ? marcado.value : '';
   }
   return form.elements[c.name].value.trim();
+}
+
+// Validação do NIF português (dígito de controlo, módulo 11).
+function nifValido(nif) {
+  if (!/^[0-9]{9}$/.test(nif)) return false;
+  var soma = 0;
+  for (var i = 0; i < 8; i++) soma += Number(nif[i]) * (9 - i);
+  var controlo = 11 - (soma % 11);
+  if (controlo >= 10) controlo = 0;
+  return controlo === Number(nif[8]);
 }

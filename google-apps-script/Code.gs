@@ -1,6 +1,9 @@
 var PASTA_ANEXOS = 'Daniela Marques Seguros — Anexos do site';
 // Endereço que recebe um e-mail por cada pedido novo (deixar vazio para desativar).
 var EMAIL_NOTIFICACAO = 'dmdcmediadores@gmail.com';
+// Separador com uma linha por cliente (identificado pelo NIF).
+var FOLHA_CLIENTES = 'Clientes';
+var CABECALHOS_CLIENTES = ['NIF', 'Nome', 'E-mail', 'Telemóvel', 'Primeiro pedido', 'Último pedido', 'Nº de pedidos', 'Seguros pedidos'];
 
 function doPost(e) {
   try {
@@ -25,6 +28,12 @@ function doPost(e) {
       .concat([['Anexos', anexos]]);
 
     escreverLinha(data.folha || 'Contactos', pares);
+
+    try {
+      registarCliente(pares, data.folha || 'Contactos');
+    } catch (err) {
+      console.error('Falha ao atualizar a lista de clientes: ' + err.message);
+    }
 
     try {
       notificarPorEmail(data.folha || 'Contactos', pares, data.email);
@@ -61,6 +70,55 @@ function escreverLinha(nomeFolha, pares) {
     var valores = {};
     pares.forEach(function (p) { valores[p[0]] = p[1]; });
     folha.appendRow(cabecalhos.map(function (h) { return protegerValor(valores[h]); }));
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// Acrescenta o cliente ao separador "Clientes" se o NIF ainda não existir; se existir, atualiza-o.
+function registarCliente(pares, tipo) {
+  var valores = {};
+  pares.forEach(function (p) { valores[p[0]] = p[1]; });
+  var nif = String(valores['NIF'] || '').replace(/\D/g, '');
+  if (nif.length !== 9) return;  // pedidos sem NIF (ex: formulário de contacto) não entram na lista
+
+  var lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var folha = ss.getSheetByName(FOLHA_CLIENTES);
+    if (!folha) {
+      folha = ss.insertSheet(FOLHA_CLIENTES);
+      folha.getRange(1, 1, 1, CABECALHOS_CLIENTES.length).setValues([CABECALHOS_CLIENTES]).setFontWeight('bold');
+      folha.setFrozenRows(1);
+      folha.getRange('A:A').setNumberFormat('@');  // NIF como texto
+    }
+
+    var agora = new Date();
+    var nome = valores['Nome'] || '';
+    var email = valores['E-mail'] || '';
+    var telemovel = valores['Telemóvel'] || valores['Telefone'] || '';
+
+    var ultimaLinha = folha.getLastRow();
+    var nifs = ultimaLinha > 1 ? folha.getRange(2, 1, ultimaLinha - 1, 1).getValues() : [];
+    var indice = -1;
+    for (var i = 0; i < nifs.length; i++) {
+      if (String(nifs[i][0]).replace(/\D/g, '') === nif) { indice = i; break; }
+    }
+
+    if (indice === -1) {
+      folha.appendRow([nif, nome, email, telemovel, agora, agora, 1, tipo].map(protegerValor));
+      return;
+    }
+
+    var linha = indice + 2;
+    var atual = folha.getRange(linha, 1, 1, CABECALHOS_CLIENTES.length).getValues()[0];
+    var seguros = String(atual[7] || '').split(', ').filter(Boolean);
+    if (seguros.indexOf(tipo) === -1) seguros.push(tipo);
+    folha.getRange(linha, 2, 1, CABECALHOS_CLIENTES.length - 1).setValues([[
+      nome || atual[1], email || atual[2], telemovel || atual[3],
+      atual[4] || agora, agora, (Number(atual[6]) || 0) + 1, seguros.join(', '),
+    ].map(protegerValor)]);
   } finally {
     lock.releaseLock();
   }

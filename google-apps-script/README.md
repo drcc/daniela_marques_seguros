@@ -55,3 +55,8 @@ Este ficheiro explica como ligar o formulário de contacto (`contacto.html`) a u
   Para desativar, deixar `EMAIL_NOTIFICACAO = ''`. Depois de colar esta versão, é preciso executar
   `autorizarDrive` outra vez (passa a pedir também a permissão de enviar e-mails) e publicar uma nova versão.
   Limite do Gmail gratuito: cerca de 100 e-mails por dia.
+- **Separador "Clientes":** cada pedido de simulação (tem NIF) atualiza uma lista com uma linha por cliente,
+  identificado pelo NIF: `NIF | Nome | E-mail | Telemóvel | Primeiro pedido | Último pedido | Nº de pedidos |
+  Seguros pedidos`. Se o NIF ainda não existir, é acrescentado; se existir, os contactos são atualizados com os
+  mais recentes, o contador aumenta e o tipo de seguro é juntado à lista. O formulário de contacto (sem NIF)
+  não entra nesta lista. Os formulários do site validam o dígito de controlo do NIF antes de enviar.
